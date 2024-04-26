@@ -24,6 +24,7 @@
     			<div class="dropdown-menu">
       			<a class = "dropdown-item" href="<%=request.getContextPath() %>/study/0426/t01.jsp">서버환경</a>
       			<a class = "dropdown-item" href="<%=request.getContextPath() %>/study/0426/t02.jsp">성적계산</a>
+      			<a class = "dropdown-item" href="<%=request.getContextPath() %>/study/0427_storage/t1_Cookies.jsp">쿠키연습</a>
     			</div>
   				</div>
       </li>
