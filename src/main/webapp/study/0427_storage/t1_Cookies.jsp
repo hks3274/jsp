@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file = "/include/certification.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,7 @@
 <p><br/></p>
 <div class = "container">
 	<h2>쿠키 연습 메인 메뉴</h2>
+	<hr/>
 	<hr/>
 	<div class = 'row'>
 		<div><a href = "t1_CookiesSave.jsp" class ="btn btn-success mr-3">쿠키저장</a></div>
