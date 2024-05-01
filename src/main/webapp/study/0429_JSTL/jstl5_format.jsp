@@ -28,7 +28,7 @@
 	
 	<pre>
 		사용용도 : 형식문자열을 표현(지정)할때 사용한다.(예: 쉼표, 통화량(화폐)단위, 백분율.... 날짜형식)
-		사용법 : 	< fmt : 명령어... value = "$ {값/변수}" pattern = "표현패턴" [type ="화폐단위"] />
+		사용법 : 	< fmt : 명령어... value = "$ {값/변수}" pattern = "표현패턴" [ type ="화폐단위" ] />
 	</pre>
 	<c:set var ="won1" value="7654321" />
 	<c:set var ="won2" value="7654.521" />
@@ -73,7 +73,10 @@
 	 		<fmt:formatNumber value="${won1}" type="currency" />
 	 	<hr/>
 	 	
-	 	6.URL이동 : location.href=''; ==>>> redirect=''
+	 	<!-- 6.URL이동 : location.href='';  ==>>> redirect : core에 있음 ( 예1: < c : redirect url ="경로" /> )
+	 	예2) < c : redirect url='경로'>
+	 			< c : param name = "변수명" value = "값" />
+	 			< / c : redirect > -->
 	
 		7. import : core..에 있음
 		<c:import url="/include/bs4.jsp" />	 	

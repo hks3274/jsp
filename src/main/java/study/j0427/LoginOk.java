@@ -51,7 +51,7 @@ public class LoginOk extends HttpServlet {
 			// 회원 인증 실패시 처리... 다시 로그인창으로 보내준다.
 			out.print("<script>");
 			out.print("alert('로그인 실패~~');");
-			out.print("location.href='"+request.getContextPath()+"/study/0428_Login/login.jsp';");
+			out.print("location.href='"+request.getContextPath()+"/study/0428_Login/login.jsp?';");
 			out.print("</script>");
 		}
 	}
