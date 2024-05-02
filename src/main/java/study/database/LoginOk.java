@@ -41,14 +41,18 @@ public class LoginOk extends HttpServlet {
 				cookieMid.setMaxAge(0);
 			}
 			response.addCookie(cookieMid);
-
+			
+			
 			// 필요한 정보를 session에 저장처리한다.
 			HttpSession session = request.getSession();
 			session.setAttribute("sMid", mid);
+			//회원의 성명을 세션에 저장하기 위해 DB에서 가져온 name을 세션에 저장처리한다.
+			session.setAttribute("sName", vo.getName());
 			
 			out.println("<script>");
 			out.println("alert('" + vo.getName() + "님 로그인 되었습니다.')");
 			out.println("location.href = '" + request.getContextPath() + "/study/database/LoginList';");
+			
 			out.println("</script>");
 			
 		} else {
