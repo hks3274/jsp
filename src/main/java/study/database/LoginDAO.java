@@ -91,15 +91,17 @@ public class LoginDAO {
 		return vo;
 	}
 
-	// 전체회원정보 검색
-	public ArrayList<LoginVO> getLoginList() {
+//전체 회원 정보 검색
+	public ArrayList<LoginVO> getLoginList(String sortKey, int startIndexNo, int pageSize) {
 		ArrayList<LoginVO> vos = new ArrayList<LoginVO>();
 		try {
-			sql = "select * from heowon order by name";
+			sql = "select * from heowon order by " + sortKey + " limit ?,?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startIndexNo);
+			pstmt.setInt(2, pageSize);
 			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
+			
+			while(rs.next()) {
 				vo = new LoginVO();
 				vo.setIdx(rs.getInt("idx"));
 				vo.setMid(rs.getString("mid"));
@@ -107,16 +109,14 @@ public class LoginDAO {
 				vo.setName(rs.getString("name"));
 				vo.setAge(rs.getInt("age"));
 				vo.setGender(rs.getString("gender"));
-				vo.setAddress(rs.getString("address"));
+				vo.setAddress(rs.getString("address"));	
 				vos.add(vo);
 			}
-
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
 		} finally {
 			rsClose();
 		}
-
 		return vos;
 	}
 
@@ -262,4 +262,26 @@ public class LoginDAO {
 			pstmtClose();
 		}
 	}
+	
+	
+	//전체회원건수를 구한다.
+	public int getTotRecCnt() {
+		int totRecCnt = 0; 
+		try {
+			sql = "select count(*) as cnt from heowon";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			totRecCnt = rs.getInt("cnt");
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류(cnt) : "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		
+		return totRecCnt;
+	}
+	
+	
 }
