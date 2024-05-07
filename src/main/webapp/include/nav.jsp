@@ -54,6 +54,10 @@
     			</button>
     			<div class="dropdown-menu">
       			<a class = "dropdown-item" href="${ctp}/study/password/passCheck.jsp">비밀번호 암호화</a>
+      			<a class = "dropdown-item" href="${ctp}/mapping/test1">url매핑-디렉토리패턴연습</a>
+      			<a class = "dropdown-item" href="${ctp}/mapping/test2.do">url매핑-확장자패턴연습1</a>
+      			<a class = "dropdown-item" href="${ctp}/mapping/test3.do3">url매핑-확장자패턴연습2</a>
+      			<a class = "dropdown-item" href="${ctp}/mapping/test4.do4">url매핑-확장자패턴연습3</a>
     			</div>
   				</div>
       </li>
