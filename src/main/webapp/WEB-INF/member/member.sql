@@ -33,7 +33,12 @@ create table member (
 desc member;
 
 
+
+
 insert into member values (default,'admin','1234','관리맨','관리자','남자',default,'010-1234-5678','050/서울시/그린아파트/101동/101호', 'abc@atom.com','http://www.atom.com','학생','등산',default,'관리자입니다.',default,default,default,default,default,default,default,default);
 
 
 select * from member;
+
+
+select lastDate, now(), timestampdiff(day, lastDate, now()) as deleteDiff from member;

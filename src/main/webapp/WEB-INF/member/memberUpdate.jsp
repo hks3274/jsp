@@ -14,7 +14,6 @@
   <script>
     'use strict';
     
-    let idCheckSw = 0;
     let nickCheckSw = 0;
     
     function fCheck() {
@@ -22,14 +21,11 @@
     	// 아이디,닉네임,성명,이메일,홈페이지,전화번호,비밀번호 등등....
     	
     	// 정규식을 이용한 유효성검사처리.....
-    	let regMid = /^[a-zA-Z0-9_]{4,20}$/;	// 아이디는 4~20의 영문 대/소문자와 숫자와 밑줄 가능
-      let regNickName = /^[가-힣]+$/;					// 닉네임은 한글만 가능
+      let regNickName = /^[가-힣0-9_]+$/;			// 닉네임은 한글,숫자,밑줄만 가능
       let regName = /^[가-힣a-zA-Z]+$/;				// 이름은 한글/영문 가능
     	
     	
     	// 검사를 끝내고 필요한 내역들을 변수에 담아 회원가입처리한다.
-    	let mid = myform.mid.value.trim();
-    	let pwd = myform.pwd.value.trim();
     	let nickName = myform.nickName.value;
     	let name = myform.name.value;
     	
@@ -48,17 +44,7 @@
     	let extraAddress = myform.extraAddress.value + " ";
     	let address = postcode + "/" + roadAddress + "/" + detailAddress + "/" + extraAddress;
     	
-    	if(!regMid.test(mid)) {
-    		alert("아이디는 4~20자리의 영문 소/대문자와 숫자, 언더바(_)만 사용가능합니다.");
-    		myform.mid.focus();
-    		return false;
-    	}
-    	else if(pwd.length < 4 && pwd.length > 20) {
-        alert("비밀번호는 4~20 자리로 작성해주세요.");
-        myform.pwd.focus();
-        return false;
-      }
-      else if(!regNickName.test(nickName)) {
+    	if(!regNickName.test(nickName)) {
         alert("닉네임은 한글만 사용가능합니다.");
         myform.nickName.focus();
         return false;
@@ -73,8 +59,6 @@
 			// 홈페이지 주소형식체크
 			
 			// 전화번호 형식 체크
-			
-    		// 전화번호 형식 체크
 			if(tel2 != "" && tel3 != "") {
 				// 전화번호 정규화 체크
 			}
@@ -85,11 +69,7 @@
 			}
 			
     	
-    	if(idCheckSw == 0) {
-    		alert("아이디 중복체크버튼을 눌러주세요");
-    		document.getElementById("midBtn").focus();
-    	}
-    	else if(nickCheckSw == 0) {
+    	if(nickCheckSw == 0) {
     		alert("닉네임 중복체크버튼을 눌러주세요");
     		document.getElementById("nickNameBtn").focus();
     	}
@@ -102,34 +82,6 @@
     	}
     }
     
-    // 아이디 중복체크
-    function idCheck() {
-    	let mid = myform.mid.value;
-    	
-    	if(mid.trim() == "") {
-    		alert("아이디를 입력하세요!");
-    		myform.mid.focus();
-    	}
-    	else {
-    		idCheckSw = 1;
-    		
-    		$.ajax({
-    			url  : "${ctp}/MemberIdCheck.mem",
-    			type : "get",
-    			data : {mid : mid},
-    			success:function(res) {
-    				if(res != '0') {
-    					alert("이미 사용중인 아이디 입니다. 다시 입력하세요.");
-    					myform.mid.focus();
-    				}
-    				else alert("사용 가능한 아이디 입니다.");
-    			},
-    			error : function() {
-    				alert("전송 오류!");
-    			}
-    		});
-    	}
-    }
     
     // 닉네임 중복체크
     function nickCheck() {
@@ -138,6 +90,11 @@
     	if(nickName.trim() == "") {
     		alert("닉네임을 입력하세요!");
     		myform.nickName.focus();
+    	}
+    	else if(nickName == '${sNickName}'){
+    		alert("현재 닉네임을 그대로 사용합니다. ")
+    		nickCheckSw = 1;
+    		return false;
     	}
     	else {
     		nickCheckSw = 1;
@@ -161,14 +118,9 @@
     }
     
     $(function(){
-    	$("#mid").on("blur", () => {
-    		idCheckSw = 0;
-    	});
-    	
     	$("#nickName").on("blur", () => {
     		nickCheckSw = 0;
     	});
-    	
     });
   </script>
 </head>
@@ -177,7 +129,7 @@
 <jsp:include page="/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="myform" method="post" action="${ctp}/MemberJoinOk.mem" class="was-validated">
+  <form name="myform" method="post" action="${ctp}/MemberUpdateOk.mem" class="was-validated">
     <h2>회 원 가 입</h2>
     <br/>
     <div>아이디 : ${sMid}</div>
@@ -187,21 +139,21 @@
     </div>
     <div class="form-group">
       <label for="name">성명 :</label>
-      <input type="text" class="form-control" id="name" value="${vo.name}" name="name" required />
+      <input type="text" class="form-control" id="name" name="name" value="${vo.name}" required />
     </div>
     <div class="form-group">
       <label for="email1">Email address:</label>
         <div class="input-group mb-3">
-        <c:set var="email" value ="${fn:split(vo.email,'@')}"/>
-          <input type="text" class="form-control" value="${email[0]}" id="email1" name="email1" required />
+          <c:set var="email" value="${fn:split(vo.email,'@')}"/>
+          <input type="text" class="form-control" id="email1" name="email1" value="${email[0]}" required />
           <div class="input-group-append">
             <select name="email2" class="custom-select">
-              <option value="naver.com" ${email[1] == 'naver.com'? 'selected' :''}>naver.com</option>
-              <option value="hanmail.net" ${email[1] == 'hanmail.net'? 'selected' :''}>hanmail.net</option>
-              <option value="hotmail.com" ${email[1] == 'hotmail.com'? 'selected' :''}>hotmail.com</option>
-              <option value="gmail.com" ${email[1] == 'gmail.com'? 'selected' :''}>gmail.com</option>
-              <option value="nate.com" ${email[1] == 'nate.com'? 'selected' :''}>nate.com</option>
-              <option value="yahoo.com" ${email[1] == 'yahoo.com'? 'selected' :''}>yahoo.com</option>
+              <option value="naver.com"   ${email[1] == 'naver.com' ? 'selected' : ''}>naver.com</option>
+              <option value="hanmail.net" ${email[1] == 'hanmail.net' ? 'selected' : ''}>hanmail.net</option>
+              <option value="hotmail.com" ${email[1] == 'hotmail.com' ? 'selected' : ''}>hotmail.com</option>
+              <option value="gmail.com"   ${email[1] == 'gmail.com' ? 'selected' : ''}>gmail.com</option>
+              <option value="nate.com"    ${email[1] == 'nate.com' ? 'selected' : ''}>nate.com</option>
+              <option value="yahoo.com"   ${email[1] == 'yahoo.com' ? 'selected' : ''}>yahoo.com</option>
             </select>
           </div>
         </div>
@@ -221,25 +173,25 @@
     </div>
     <div class="form-group">
       <label for="birthday">생일</label>
-      <input type="date" name="birthday" value="${fn:substring(vo.birthday,0,10)}" class="form-control"/>
+      <input type="date" name="birthday" value="${fn:substring(vo.birthday, 0, 10)}" class="form-control"/>
     </div>
     <div class="form-group">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text">전화번호 :</span> &nbsp;&nbsp;
             <select name="tel1" class="custom-select">
-              <option value="010" ${tel1 == '010'? 'selected' :''}>010</option>
-              <option value="02" ${tel1 == '02'? 'selected' :''}>서울</option>
-              <option value="031" ${tel1 == '031'? 'selected' :''}>경기</option>
-              <option value="032" ${tel1 == '032'? 'selected' :''}>인천</option>
-              <option value="041" ${tel1 == '041'? 'selected' :''}>충남</option>
-              <option value="042" ${tel1 == '042'? 'selected' :''}>대전</option>
-              <option value="043" ${tel1 == '043'? 'selected' :''}>충북</option>
-              <option value="051" ${tel1 == '051'? 'selected' :''}>부산</option>
-              <option value="052" ${tel1 == '052'? 'selected' :''}>울산</option>
-              <option value="061" ${tel1 == '061'? 'selected' :''}>전북</option>
-              <option value="062" ${tel1 == '062'? 'selected' :''}>광주</option>
-            </select>
+              <option value="010" ${tel1 == '010' ? 'selected' : ''}>010</option>
+              <option value="02"  ${tel1 == '02'  ? 'selected' : ''}>서울</option>
+              <option value="031" ${tel1 == '031' ? 'selected' : ''}>경기</option>
+              <option value="032" ${tel1 == '032' ? 'selected' : ''}>인천</option>
+              <option value="041" ${tel1 == '041' ? 'selected' : ''}>충남</option>
+              <option value="042" ${tel1 == '042' ? 'selected' : ''}>대전</option>
+              <option value="043" ${tel1 == '043' ? 'selected' : ''}>충북</option>
+              <option value="051" ${tel1 == '051' ? 'selected' : ''}>부산</option>
+              <option value="052" ${tel1 == '052' ? 'selected' : ''}>울산</option>
+              <option value="061" ${tel1 == '061' ? 'selected' : ''}>전북</option>
+              <option value="062" ${tel1 == '062' ? 'selected' : ''}>광주</option>
+            </select>-
         </div>
         <input type="text" name="tel2" value="${tel2}" size=4 maxlength=4 class="form-control"/>-
         <input type="text" name="tel3" value="${tel3}" size=4 maxlength=4 class="form-control"/>
@@ -248,16 +200,16 @@
     <div class="form-group">
       <label for="address">주소</label>
       <div class="input-group mb-1">
-        <input type="text" name="postcode" id="sample6_postcode" value="${postcode}" class="form-control">
+        <input type="text" name="postcode" value="${postcode}" id="sample6_postcode" placeholder="우편번호" class="form-control">
         <div class="input-group-append">
           <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn btn-secondary">
         </div>
       </div>
-      <input type="text" name="roadAddress" id="sample6_address" size="50" value="${roadAddress}" class="form-control mb-1">
+      <input type="text" name="roadAddress" value="${roadAddress}" id="sample6_address" size="50" placeholder="주소" class="form-control mb-1">
       <div class="input-group mb-1">
-        <input type="text" name="detailAddress" id="sample6_detailAddress" value="${detailAddress}" class="form-control"> &nbsp;&nbsp;
+        <input type="text" name="detailAddress" value="${detailAddress}" id="sample6_detailAddress" placeholder="상세주소" class="form-control"> &nbsp;&nbsp;
         <div class="input-group-append">
-          <input type="text" name="extraAddress" id="sample6_extraAddress" value="${extraAddress}" class="form-control">
+          <input type="text" name="extraAddress" value="${extraAddress}" id="sample6_extraAddress" placeholder="참고항목" class="form-control">
         </div>
       </div>
     </div>
@@ -269,23 +221,24 @@
       <label for="name">직업</label>
       <select class="form-control" id="job" name="job">
         <!-- <option value="">직업선택</option> -->
-        <option ${vo.job == '학생'? 'selected' : ''}>학생</option>
-        <option ${vo.job == '회사원'? 'selected' : ''}>회사원</option>
-        <option ${vo.job == '공무원'? 'selected' : ''}>공무원</option>
-        <option ${vo.job == '군인'? 'selected' : ''}>군인</option>
-        <option ${vo.job == '의사'? 'selected' : ''}>의사</option>
-        <option ${vo.job == '법조인'? 'selected' : ''}>법조인</option>
-        <option ${vo.job == '세무인'? 'selected' : ''}>세무인</option>
-        <option ${vo.job == '자영업'? 'selected' : ''}>자영업</option>
-        <option ${vo.job == '기타'? 'selected' : ''}>기타</option>
+        <option ${vo.job == '학생'  ? 'selected' : ''}>학생</option>
+        <option ${vo.job == '회사원' ? 'selected' : ''}>회사원</option>
+        <option ${vo.job == '공무원' ? 'selected' : ''}>공무원</option>
+        <option ${vo.job == '군인'  ? 'selected' : ''}>군인</option>
+        <option ${vo.job == '의사'  ? 'selected' : ''}>의사</option>
+        <option ${vo.job == '법조인' ? 'selected' : ''}>법조인</option>
+        <option ${vo.job == '세무인' ? 'selected' : ''}>세무인</option>
+        <option ${vo.job == '자영업' ? 'selected' : ''}>자영업</option>
+        <option ${vo.job == '기타' ? 'selected' : ''}>기타</option>
       </select>
     </div>
     <div class="form-group">
-      취미 : 
-      <c:set var = "varHobbys" value="${fn:split('등산/낚시/수영/독서/영화감상/바둑/축구/기타','/')}" />
-			<c:forEach var="tempHobbys" items="${varHobbys}" varStatus="st">
-				<input type ="checkbox" name="hobby" value="${tempHobbys}" <c:if test="${fn:contains(hobby,tempHobbys)}">checked</c:if>>${tempHobbys} &nbsp;
-			</c:forEach>
+      취미 : &nbsp;
+      <c:set var="varHobbys" value="${fn:split('등산/낚시/수영/독서/영화감상/바둑/축구/기타','/')}"/>
+      <c:forEach var="tempHobby" items="${varHobbys}" varStatus="st">
+        <%-- <input type="checkbox" name="hobby" value="${tempHobby}" <c:if test="${fn:contains(hobby,varHobbys[st.index])}">checked</c:if> /> ${tempHobby}&nbsp; --%>
+        <input type="checkbox" name="hobby" value="${tempHobby}" <c:if test="${fn:contains(hobby,tempHobby)}">checked</c:if> /> ${tempHobby}&nbsp;
+      </c:forEach>
     </div>
     <div class="form-group">
       <label for="content">자기소개</label>
@@ -309,12 +262,14 @@
       <input type="file" name="fName" id="file" class="form-control-file border"/>
     </div>
     <button type="button" class="btn btn-secondary" onclick="fCheck()">회원정보수정</button> &nbsp;
-    <button type="reset" class="btn btn-success">다시작성</button> &nbsp;
-    <button type="button" class="btn btn-warning" onclick="location.href='MemberMain.mem';">돌아가기</button>
+    <button type="reset" class="btn btn-secondary">다시작성</button> &nbsp;
+    <button type="button" class="btn btn-secondary" onclick="location.href='MemberMain.mem';">돌아가기</button>
     
     <input type="hidden" name="email" />
     <input type="hidden" name="tel" />
     <input type="hidden" name="address" />
+    <input type="hidden" name="mid" value="${sMid}" />
+    <input type="hidden" name="photo" value="${vo.photo}" />
   </form>
 </div>
 <p><br/></p>

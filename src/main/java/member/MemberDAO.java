@@ -154,18 +154,16 @@ public class MemberDAO {
 		}
 		return vo;
 	}
-	
-	
+
 	// 로그인시에 처리할 내용들을 업데이트 시켜준다.
 	public void setLoginUpdate(MemberVO vo) {
 		try {
-			sql = "update member set point=?,lastDate=now(),visitCnt=visitCnt+1,todayCnt=? where mid = ?";
+			sql = "update member set point=?, lastDate=now(), visitCnt=visitCnt+1, todayCnt=? where mid = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getPoint());
 			pstmt.setInt(2, vo.getTodayCnt());
 			pstmt.setString(3, vo.getMid());
 			pstmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
 		} finally {
@@ -173,8 +171,7 @@ public class MemberDAO {
 		}
 	}
 
-	
-	//회원 전체 리스트
+	// 회원 전체 리스트
 	public ArrayList<MemberVO> getMemberList() {
 		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 		try {
@@ -207,7 +204,6 @@ public class MemberDAO {
 				vo.setStartDate(rs.getString("startDate"));
 				vo.setLastDate(rs.getString("lastDate"));
 				vo.setTodayCnt(rs.getInt("todayCnt"));
-				
 				vos.add(vo);
 			}
 		} catch (SQLException e) {
@@ -218,7 +214,7 @@ public class MemberDAO {
 		return vos;
 	}
 
-	
+	// 비밀번호 변경처리
 	public int setMemberPwdChange(String mid, String pwd) {
 		int res = 0;
 		try {
@@ -227,13 +223,57 @@ public class MemberDAO {
 			pstmt.setString(1, pwd);
 			pstmt.setString(2, mid);
 			res = pstmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
 		} finally {
 			pstmtClose();
 		}
-		
+		return res;
+	}
+
+	// 회원 정보 수정처리
+	public int setMemberUpdateOk(MemberVO vo) {
+		int res = 0;
+		try {
+			sql = "update member set nickName=?, name=?, gender=?, birthday=?, tel=?, address=?, "
+					+ "email=?, homePage=?, job=?, hobby=?, photo=?, content=?, userInfor=? where mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getNickName());
+			pstmt.setString(2, vo.getName());
+			pstmt.setString(3, vo.getGender());
+			pstmt.setString(4, vo.getBirthday());
+			pstmt.setString(5, vo.getTel());
+			pstmt.setString(6, vo.getAddress());
+			pstmt.setString(7, vo.getEmail());
+			pstmt.setString(8, vo.getHomePage());
+			pstmt.setString(9, vo.getJob());
+			pstmt.setString(10, vo.getHobby());
+			pstmt.setString(11, vo.getPhoto());
+			pstmt.setString(12, vo.getContent());
+			pstmt.setString(13, vo.getUserInfor());
+			pstmt.setString(14, vo.getMid());
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+	
+	//회원탈퇴 신청처리
+	public int setMemberDeleteUpdate(String mid) {
+		int res = 0;
+		try {
+			sql = "update member set userDel = 'OK', level=99 where mid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
 		return res;
 	}
 	
