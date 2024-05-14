@@ -19,11 +19,11 @@
 		<table class ="table table-bordered">
 			<tr>
 				<th>글쓴이</th>
-				<td><input type ="text" name ="nickName" id ="nickName" value="${sNickName}" required class="form-control"/></td>
+				<td><input type ="text" name ="nickName" id ="nickName" value="${sNickName}" readonly class="form-control"/></td>
 			</tr>
 			<tr>
 				<th>글제목</th>
-				<td><input type ="text" name ="title" id ="title" placeholder="글 제목을 입력하세요" autofocus required/></td>
+				<td><input type ="text" name ="title" id ="title" placeholder="글 제목을 입력하세요" autofocus required class="form-control"/></td>
 			</tr>
 			<tr>
 				<th>글내용</th>

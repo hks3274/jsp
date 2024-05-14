@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import admin.AdminContentCommand;
 import admin.member.MemberDeleteOkCommand;
 import admin.member.MemberLevelChangeCommand;
 import admin.member.MemberListCommand;
@@ -46,6 +47,31 @@ public class BoardController extends HttpServlet {
 			command = new BoardInputOkCommand();
 			command.execute(request, response);
 			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("/BoardContent")) {
+			command = new BoardContentCommand();
+			command.execute(request, response);
+			viewPage += "/boardContent.jsp";
+		}
+		else if(com.equals("/BoardDelete")) {
+			command = new BoardDeleteCommand();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("/BoardGoodCheck")) {
+			command = new BoardGoodCheckCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/BoardGoodCheck2")) {
+			command = new BoardGoodCheck2Command();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/BoardGoodCheckPlusMinus")) {
+			command = new BoardGoodCheckPlusMinusCommand();
+			command.execute(request, response);
+			return;
 		}
 		
 		

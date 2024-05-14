@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import admin.member.MemberDeleteOkCommand;
 import admin.member.MemberLevelChangeCommand;
+import admin.member.MemberLevelSelectCheckCommand;
 import admin.member.MemberListCommand;
 
 @SuppressWarnings("serial")
@@ -29,7 +30,7 @@ public class AdminController extends HttpServlet {
 		HttpSession session = request.getSession();
 		int level = session.getAttribute("sLevel")==null ? 999 : (int) session.getAttribute("sLevel");
 		
-		if(level != 0) {
+		if(level > 0) {
 			request.setAttribute("message", "로그인후 사용하세요");
 			request.setAttribute("url", request.getContextPath()+"/MemberLogin.mem");
 			viewPage = "/include/message.jsp";
@@ -57,6 +58,11 @@ public class AdminController extends HttpServlet {
 		}
 		else if(com.equals("/MemberDeleteOk")) {
 			command = new MemberDeleteOkCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/MemberLevelSelectCheck")) {
+			command = new MemberLevelSelectCheckCommand();
 			command.execute(request, response);
 			return;
 		}
