@@ -1,4 +1,4 @@
-package board;
+package admin.board;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import admin.AdminDAO;
+import admin.AdminInterface;
+import board.BoardDAO;
+import board.BoardVO;
 
-public class BoardContentCommand implements BoardInterface {
+public class BoardContentCommand implements AdminInterface {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -43,12 +46,11 @@ public class BoardContentCommand implements BoardInterface {
 		request.setAttribute("preVo", preVo);
 		request.setAttribute("nextVo", nextVo);
 		
-		//신고글 유무처리
-		AdminDAO adminDAO = new AdminDAO();
-		String report = adminDAO.getBoardReport("board", idx);
-		System.out.println(report);
-		request.setAttribute("report", report);
-		
+	//신고글 유무처리
+			AdminDAO adminDAO = new AdminDAO();
+			String report = adminDAO.getBoardReport("board", idx);
+			System.out.println(report);
+			request.setAttribute("report", report);
 	}
 
 }

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import admin.complaint.ComplaintVO;
 import common.GetConn;
 import member.MemberVO;
 
@@ -172,5 +173,97 @@ public class AdminDAO {
 		}
 		return totRecCnt;
 	}
+
+	public int setBoardComplaintInput(ComplaintVO vo) {
+		int res = 0;
+		
+		try {
+			sql = "insert into complaint values(default,?,?,?,?,default)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getPart());
+			pstmt.setInt(2, vo.getPartIdx());
+			pstmt.setString(3, vo.getCpMid());
+			pstmt.setString(4, vo.getCpContent());
+			res = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();			
+		}
+		
+		return res;
+	}
+
+	//신고글 유무 체크
+	public String getBoardReport(String part, int idx) {
+		String report = "NO";
+		try {
+			sql = "select * from complaint where part = ? and partIdx = ?";
+			pstmt = conn.prepareStatement(report);
+			pstmt.setString(1, part);
+			pstmt.setInt(2, idx);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) report = "OK";
+			
+		}catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();			
+		}
+		
+		return report;
+	}
+	
+	//신고 전체목록
+	public ArrayList<ComplaintVO> getComplaintList() {
+		ArrayList<ComplaintVO> vos = new ArrayList<ComplaintVO>();
+		try {
+			sql = "select  date_format(c.cpDate, '%Y-%m-%d %H:%i') as cpDate, c.*, b.title as title, b.nickName as nickName, b.mid as mid, b.complaint as complaint from complaint c, board b where c.partIdx = b.idx order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			ComplaintVO vo = null; 
+			while(rs.next()) {
+				vo = new ComplaintVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setPart(rs.getString("part"));
+				vo.setPartIdx(rs.getInt("partIdx"));
+				vo.setCpMid(rs.getString("cpMid"));
+				vo.setCpContent(rs.getString("cpContent"));
+				vo.setCpDate(rs.getString("cpDate"));
+				
+				vo.setTitle(rs.getString("title"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setMid(rs.getString("mid"));
+				vo.setComplaint(rs.getString("complaint"));
+				vos.add(vo);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();			
+		}
+		
+		return vos;
+	}
+
+	public void setUpdateComplaint(int partIdx, String complaint) {
+		try {
+			sql = "update board set complaint = ? where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, complaint);
+			pstmt.setInt(2, partIdx);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();			
+		}
+	}
+
 	
 }

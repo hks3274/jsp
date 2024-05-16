@@ -1,4 +1,4 @@
-package study2;
+package study2.Heowon;
 
 import java.io.IOException;
 
@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import study.database.LoginDAO;
 import study.database.LoginVO;
+import study2.StudyInterface;
 
-public class HeowonInputCommand implements StudyInterface {
+public class HeowonUpdateCommand implements StudyInterface {
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,20 +30,17 @@ public class HeowonInputCommand implements StudyInterface {
 		vo.setGender(gender);
 		vo.setAddress(address);
 		
+		
+		
 		LoginDAO dao = new LoginDAO();
 		
-		//아이디 중복체크
 		LoginVO vo2 = dao.getLoginIdSearch(mid);
+		vo.setIdx(vo2.getIdx());
 		
-		if(vo2.getName() != null) {
-			response.getWriter().write("아이디가 중복되었습니다. 다시 가입하세요.");
-		} 
-		else {
-			int res = dao.setLoginInput(vo);
-			if(res != 0) response.getWriter().write("1");
-			else response.getWriter().write("회원가입실패.. 다시 가입해주세요.");
-		}
-		 
+		int res = dao.setLoginUpdate(vo);
+		
+		
+		response.getWriter().write(res+"");
 	}
 
 }

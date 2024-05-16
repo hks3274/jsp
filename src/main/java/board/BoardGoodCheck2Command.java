@@ -20,6 +20,7 @@ public class BoardGoodCheck2Command implements BoardInterface {
 		String sw = "0";
 		HttpSession session = request.getSession();
 		ArrayList<String> contentGood = (ArrayList<String>) session.getAttribute("sContentGood");
+		
 		if(contentGood == null) contentGood = new ArrayList<String>();		
 		String imsiContentGood = "boardGood" + idx;
 		if(!contentGood.contains(imsiContentGood)) {
