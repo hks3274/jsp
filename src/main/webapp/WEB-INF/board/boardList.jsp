@@ -63,11 +63,12 @@
 		      <td class="text-left">
 		        <a href="BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}">${vo.title}</a>
 		        <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif" /></c:if>  
+		        (${vo.replyCnt})
 		      </td>
 		      <td>
 		      	${vo.nickName}
 		      	<c:if test="${sLevel == 0}">
-		      		<a href ="#" onclick="modalCheck('${vo.hostIp}','${vo.mid}','${vo.nickName}','${vo.idx}')" data-toggle="modal" data-target="#myModal" class ="btn btn-success btn-sm">모달출력</a>
+		      		<a href ="#" onclick="modalCheck('${vo.hostIp}','${vo.mid}','${vo.nickName}','${vo.idx}')" data-toggle="modal" data-target="#myModal" class ="badge badge-success">모달</a>
 		      	</c:if>
 		      </td>
 		      <td>
@@ -96,6 +97,21 @@
 	  </ul>
 	</div>
 	<!-- 블록페이지 끝 -->
+	<br/>
+	<!-- 검색기 시작-->
+	<div class ="container text-center">
+		<form name="searchForm" method="post" action="BoardSearchList.bo">
+			<b> 검색 : </b>
+			<select name="search" id="search">
+				<option value="title">글제목</option>
+				<option value="nickName">글쓴이</option>
+				<option value="content">글내용</option>
+			</select>
+			<input type="text" name="searchString" id="searchString" required/> 
+			<input type="submit" value="검색" class="btn btn-secondary btn-sm"/>
+		</form>
+	</div>
+	<!-- 검색기 끝 -->
 </div>
 <p><br/></p>
 

@@ -199,10 +199,10 @@ public class AdminDAO {
 	public String getBoardReport(String part, int idx) {
 		String report = "NO";
 		try {
-			sql = "select * from complaint where part = ? and partIdx = ?";
-			pstmt = conn.prepareStatement(report);
-			pstmt.setString(1, part);
-			pstmt.setInt(2, idx);
+			sql = "select * from complaint where partIdx = ? and part = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.setString(2, part);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) report = "OK";

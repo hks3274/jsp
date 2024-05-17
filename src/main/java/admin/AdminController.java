@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import admin.board.BoardContentCommand;
+import admin.board.BoardListCommand;
 import admin.complaint.BoardComplaintInputCommand;
 import admin.complaint.ComplaintCheckCommand;
 import admin.complaint.ComplaintListCommand;
@@ -33,7 +35,7 @@ public class AdminController extends HttpServlet {
 		HttpSession session = request.getSession();
 		int level = session.getAttribute("sLevel")==null ? 999 : (int) session.getAttribute("sLevel");
 		
-		if(com.equals("/BoardComplaintInput")) {
+		if(com.equals("/boardComplaintInput")) {
 			command = new BoardComplaintInputCommand();
 			command.execute(request, response);
 			return;
@@ -73,6 +75,16 @@ public class AdminController extends HttpServlet {
 			command = new MemberLevelSelectCheckCommand();
 			command.execute(request, response);
 			return;
+		}
+		else if(com.equals("/BoardList")) {
+			command = new BoardListCommand();
+			command.execute(request, response);
+			viewPage += "/board/boardList.jsp";
+		}
+		else if(com.equals("/BoardContent")) {
+			command = new BoardContentCommand();
+			command.execute(request, response);
+			viewPage += "/board/boardContent.jsp";
 		}
 		else if(com.equals("/ComplaintList")) {
 			command = new ComplaintListCommand();

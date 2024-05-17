@@ -26,7 +26,6 @@ public class BoardComplaintInputCommand implements AdminInterface {
 		vo.setPartIdx(partIdx);
 		vo.setCpMid(cpMid);
 		vo.setCpContent(cpContent);
-		System.out.println("vo:"+vo);
 		int res = dao.setBoardComplaintInput(vo);
 		
 		response.getWriter().write(res+"");
