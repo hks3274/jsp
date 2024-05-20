@@ -1,5 +1,6 @@
 package study2.pdstest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 
@@ -19,6 +20,7 @@ public class FileUpload4OkCommand implements StudyInterface {
 		String realPath = request.getServletContext().getRealPath("/images/pdstest");
 		int maxSize = 1024 * 1024 *10;
 		String encoding = "UTF-8";
+		
 		
 		MultipartRequest multipartRequest =  new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
 		
