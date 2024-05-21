@@ -12,9 +12,8 @@
 		'use strict';
 		
 		function fCheck() {
-			//let fName = document.getElementById("file").value;
-			//let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
 			let fName = document.getElementById("file").value;
+			let fNames = "";
 			let ext = "";
 			let fileSize = 0;
 			let MaxSize = 1024 * 1024 * 10 //기본단위 : Byte, 1024 * 1024 * 10 = 10MByte 허용
@@ -33,7 +32,10 @@
 				
 				if(ext != 'jpg' && ext != 'png' && ext != 'gif' && ext != 'hwp' && ext != 'ppt' && ext != 'pptx' && ext != 'zip' && ext != 'docx' && ext != 'doc' && ext != 'pdf' && ext != 'xisx' && ext != 'txt'){
 					alert("업로드 가능한 파일은 'jpg/png/gif/hwp/ppt/pptx/zip/doc/docx/pdf/xisx/txt'만 가능합니다.");
+					return false;
 				}
+				
+				fNames += fName + "/";
 			}
 			
 			if(fileSize > MaxSize) {
@@ -41,6 +43,7 @@
 			}
 			else{
 				alert("파일전송");
+				document.getElementById("fNames").value = fNames;
 				myform.submit();
 			}		
 		}
@@ -63,9 +66,13 @@
 		</div>
 		<input type="button" value="파일전송" onclick="fCheck()" class="btn btn-success form-control" />
 		<input type = "hidden" name="nickName" value = "${sNickName}"/>
+		<input type="hidden" name ="fNames" id="fNames"/>
 	</form>
 	<hr/>
-	<div><a href="FileDownLoad.st" class="btn btn-primary form-control">다운로드 폴더로 이동하기</a></div>
+	<div class ="row">
+		<div class="col"><a href="FileDownLoad.st" class="btn btn-primary form-control">다운로드 폴더로 이동하기</a></div>
+		<div class="col text-center"><a href="FileUpload.st" class="btn btn-warning form-control">돌아가기</a></div>
+	</div>
 </div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />

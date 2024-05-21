@@ -18,12 +18,14 @@ import study2.Heowon.HeowonUpdateCommand;
 import study2.ajax.AjaxIdCheck0Command;
 import study2.ajax.AjaxIdCheck1Command;
 import study2.modal.ModalTestCommand;
+import study2.pdstest.FileDeleteCheckCommand;
 import study2.pdstest.FileDeleteCommand;
 import study2.pdstest.FileDownLoadCommand;
 import study2.pdstest.FileUpload1OkCommand;
 import study2.pdstest.FileUpload2OkCommand;
 import study2.pdstest.FileUpload3OkCommand;
 import study2.pdstest.FileUpload4OkCommand;
+import study2.pdstest.JavaFileDownLoadCommand;
 
 @SuppressWarnings("serial")
 @WebServlet("*.st")
@@ -132,16 +134,34 @@ public class studyController extends HttpServlet {
 			command.excute(request, response);
 			viewPage = "/include/message.jsp";
 		}
+		else if(com.equals("FileUpload5")) {
+			viewPage += "/pdstest/fileUpload5.jsp";
+		}
+		else if(com.equals("FileUpload6")) {
+			viewPage += "/pdstest/fileUpload6.jsp";
+		}
 		else if(com.equals("FileDownLoad")) {
 			command = new FileDownLoadCommand();
 			command.excute(request, response);
 			viewPage += "/pdstest/fileDownLoad.jsp";
 		}
+		else if(com.equals("JavaFileDownload")) {
+			command = new JavaFileDownLoadCommand();
+			command.excute(request, response);
+			return;
+		}
 		else if(com.equals("FileDelete")) {
 			command = new FileDeleteCommand();
 			command.excute(request, response);
-			return
-					;
+			return;
+		}
+		else if(com.equals("FileDeleteCheck")) {
+			command = new FileDeleteCheckCommand();
+			command.excute(request, response);
+			return;
+		}
+		else if(com.equals("FileUpload")) {
+			viewPage += "/pdstest/fileUpload.jsp";
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
