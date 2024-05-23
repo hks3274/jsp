@@ -42,3 +42,43 @@ select * from member;
 
 
 select lastDate, now(), timestampdiff(day, lastDate, now()) as deleteDiff from member;
+
+
+/* 실시간 DB 채팅 */
+create table memberChat (
+	idx int not null auto_increment primary key,
+	nickName varchar(20) not null,
+	chat varchar(100) not null
+);
+desc memberChat;
+
+insert into memberChat values(default, 'admin','안녕?1');
+insert into memberChat values(default, 'hkd1234','안녕?2');
+insert into memberChat values(default, 'admin','안녕?3');
+insert into memberChat values(default, 'atom1234','안녕?4');
+insert into memberChat values(default, 'admin','안녕?5');
+insert into memberChat values(default, 'hkd1234','안녕?6');
+insert into memberChat values(default, 'admin','안녕?7');
+insert into memberChat values(default, 'hkd1234','안녕?8');
+insert into memberChat values(default, 'admin','안녕?9');
+insert into memberChat values(default, 'atom1234','안녕?10');
+insert into memberChat values(default, 'hkd1234','안녕?11');
+insert into memberChat values(default, 'admin','안녕?12');
+insert into memberChat values(default, 'atom1234','안녕?13');
+insert into memberChat values(default, 'hkd1234','안녕?14');
+insert into memberChat values(default, 'admin','안녕?15');
+insert into memberChat values(default, 'admin','안녕?16');
+insert into memberChat values(default, 'hkd1234','안녕?17');
+insert into memberChat values(default, 'admin','안녕?18');
+insert into memberChat values(default, 'admin','안녕?19');
+insert into memberChat values(default, 'hkd1234','안녕?20');
+insert into memberChat values(default, 'admin','안녕?21');
+insert into memberChat values(default, 'admin','안녕?22');
+insert into memberChat values(default, 'hkd1234','안녕?23');
+
+
+
+select * from memberChat order by idx desc limit 20;
+select m.* from (select * from memberChat order by idx desc limit 20) m order by idx;
+
+

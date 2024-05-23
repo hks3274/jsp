@@ -86,7 +86,7 @@
 <jsp:include page="/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="myform" method="post" action="PdsInputOk.pds" enctype="multipart/form-data">
+  <form name="myform" method="post" action="PdsInputOk.pds"class="was-validated" enctype="multipart/form-data">
     <h2 class="text-center">자 료 올 리 기</h2>
     <br/>
 		<div>
@@ -114,8 +114,8 @@
     </div>
     <div class="mb-2">
       공개여부 :
-      <input type="radio" name="openSw" value="공개" onclick="pwdCheck1()" checked class="mr-3"/>공개
-      <input type="radio" name="openSw" value="비공개" onclick="pwdCheck2()" class="mr-3"/>비공개
+      <input type="radio" name="openSw" value="공개" onclick="pwdCheck1()" checked/>공개 &nbsp; &nbsp;
+      <input type="radio" name="openSw" value="비공개" onclick="pwdCheck2()"/>비공개
       <div id="pwdDemo" style="display:none"><input type="password" name="pwd" id="pwd" value="1234" /></div>
     </div>
     <div>

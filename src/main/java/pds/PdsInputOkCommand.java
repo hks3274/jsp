@@ -14,6 +14,7 @@ import common.SecurityUtil;
 
 public class PdsInputOkCommand implements PdsInterface {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String realPath = request.getServletContext().getRealPath("/images/pds");
@@ -52,7 +53,7 @@ public class PdsInputOkCommand implements PdsInterface {
 		String hostIp = multipartRequest.getParameter("hostIp")==null? "" : multipartRequest.getParameter("hostIp");
 		String content = multipartRequest.getParameter("content")==null? "" : multipartRequest.getParameter("content");
 		
-		//비밀번호 암호화(SHA256);
+		//비밀번호 암호화(SHA256) - salt 적용처리하지 않음;
 		SecurityUtil security = new SecurityUtil();
 		pwd = security.encryptSHA256(pwd);
 		

@@ -15,8 +15,8 @@ create table pds (
 	pwd				varchar(100), 								/* 파일 비공개시 암호 설정 sha256 암호화 */
 	hostIp		varchar(30) not null,					/* 업로드한 클라이언트 IP */
 	content 	text,													/* 업로드 파일의 상세 설명 */
-	primary key(idx),
-	foreign key(mid) references member(mid)
+	primary key(idx),												
+	foreign key(mid) references member(mid)	
 );
 
 desc pds;
